@@ -36,6 +36,9 @@ jobs:
           push: true
           tags: ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com/${{ env.ECR_REPOSITORY }}:latest
 
+      - name: Docker credentials
+          aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 303981612052.dkr.ecr.eu-central-1.amazonaws.com
+
       - name: delete existing task definiton
         run: |
           aws ecs delete-task-definitions --task-definitions arn:aws:ecs:${{ env.AWS_DEFAULT_REGION }}:${{ env.AWS_ACCOUNT_ID }}:task-definition/travelperktest
@@ -47,3 +50,4 @@ jobs:
       - name: start two new tasks from above task definition
         run: |
           aws ecs run-task --task-definition travelperktest --count 2     
+      
