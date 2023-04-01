@@ -3,7 +3,7 @@ name: Deploy to AWS Fargate
 on:
   push:
     branches:
-      - main
+      - test1
 
 env:
   AWS_DEFAULT_REGION: eu-central-1
