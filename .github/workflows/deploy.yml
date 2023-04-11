@@ -3,7 +3,7 @@ name: Deploy to AWS Fargate
 on:
   push:
     branches:
-      - main
+      - test1
 
 env:
   AWS_DEFAULT_REGION: eu-central-1
@@ -28,6 +28,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_DEFAULT_REGION }}
+
+      - name: Configure DOCKER authentication
+        run: |
+          aws ecr get-login-password --region eu-central-1 | docker login --username AWS --password-stdin 303981612052.dkr.ecr.eu-central-1.amazonaws.com
+        #aws ecr get-login-password --region ${{ env.AWS_DEFAULT_REGION }} | docker login --username AWS --password ${{ secrets.AWS_SECRET_ACCESS_KEY }} ${{ env.AWS_ACCOUNT_ID }}.dkr.ecr.${{ env.AWS_DEFAULT_REGION }}.amazonaws.com  
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v2
